@@ -86,7 +86,7 @@ class ViewController: UIViewController {
         // (-2)%3=-2のため、countImageを足して正にする
           //showingNum+1を画像表示前としたため、-1に変更
         showTheImage()
-        //TODO: 質問→showLast,showNextを-1,+1で取得し1つの機能で実装する記法と、以下案２の実装方法のヒント
+        //TODO: 質問→showLast,showNextを-1,+1で取得し1つの機能で実装する記法と、案２の実装方法のヒント
         //案１．押下されたボタン名称でif/else またはcase
         //案２．ボタンの名称か引数に-1などを設定
     
@@ -115,6 +115,16 @@ class ViewController: UIViewController {
         // --▼②配列に画像を格納…—————————————————
         //TODO: 課題提出後→別ファイルを参照するなどして一括取得したい
         //TODO: 質問→リリースするなら、Azure以外ではどのような形式が良いか?
+        //　　　 リリースアプリの一部で使う際の要件としては、以下を検討している
+        // (1)家族内のみのドメスティックなSNSを作りたいが、
+        //   曽祖父母など携帯に慣れないユーザー用にこの画面を使用する
+        //　　※アプリ拡散用にInstagramやTwitterへの外部連携機能もつける
+        // (2)データ保存・共有方法は、サーバーコストを考え以下とする
+        //　　　①当初リリースでは端末内で全idについて写真以外の情報を格納し、
+        //　　　　対象権限の写真のうちダウンロード未完の差分のみダウンロードする
+        //　　　②後でリリースする有料版使用時は、
+        //　　　　Wifi接続時にサーバーから都度読込んで表示できる設定も用意
+        
         imageArray.append(UIImage(named:"Watermelon0.jpeg")!)
         imageArray.append(UIImage(named:"Watermelon1.jpeg")!)
         imageArray.append(UIImage(named:"Watermelon2.jpeg")!)
@@ -183,7 +193,11 @@ class ViewController: UIViewController {
         going = false //念の為、戻った時もfalseの設定に。
         buttonStatus()
         
-        //TODO: 質問→画像の拡大表示は未実装だが、アニメーションで拡大させつつ表示させる方法を伺いたい
+        //TODO: 質問→画像の拡大表示は未実装 アニメーションをつけて画像を表示させる方法は?
+        //最終章の課題提出時、スライドショーはアニメーションで拡大+透過度100→0%にさせつつ表示させたい
+        //初期表示か何かで"animated"の引数があったように思うが、
+        //この辺りでフェードインのような効果をつけられるか。
+        //それとも、拡大した状態の画像と繋げるような実装をする必要があるか
         //--△⑤拡大表示の実装—————————————————
     }
     
