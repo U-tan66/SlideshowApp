@@ -94,6 +94,7 @@ class ViewController: UIViewController {
         //  →isEnableで自動調整された
         
         //TODO: 課題提出後→ボタンを見やすく→https://qiita.com/bu-ka/items/afda427e8dbe03e8e3a2
+        //TODO: 質問(追加)→ ボタンの色など、CSSのように統一したデザインを準備しておくことはできるか
         // --△③戻る、進むを実装—————————————————
     }
     
@@ -144,6 +145,11 @@ class ViewController: UIViewController {
             //showedNum = (showedNum + 1) % countImage
             showTheImage() //④のボタンと、アニメーションをつけるため別機能に
         }
+        //TODO: 課題提出後(追加)→ 家族のコメントがあれば順に表示してゆき、コメント数×1秒追加したい
+        //　写真を元に家族同士の会話がぽんぽん弾んでいる表現と、
+        //　ちょっと入力すればおばあちゃんもその中に入れるよ、という演出。
+        //　左右から出して、上に少しずつ流して表示させる?
+        //　もし顔認識が実装できたら、登場している人から吹出しを出せると楽しい。
         // --△②配列の画像表示 —————————————————
     }
     
@@ -178,8 +184,20 @@ class ViewController: UIViewController {
      */
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         //--▼⑤拡大表示の実装—————————————————
-        self.timer.invalidate()
+        //FIXME: 0回目ケースの考慮不足(timer.invalidateメソッドを呼出していない) 詳細は以下コメント
+        /*——エラーと修正点————————————————————————————————
+         スライドショー画面で一度もスライドショーの再生を行っていない状態で画像をタップして拡大画面へ遷移しようとするとエラーが発生します。
+         これは、タイマーが一度も生成されていない状態でtimerプロパティのinvalidateメソッドを呼び出そうとしているために発生しているようです。
+         こちら、一度もスライドショーの再生を行っていない状態でも拡大画面へ遷移できるように修正をお願いいたします。
+         ———————————————————————————————————————————————————*/
+        
+        if going {
+            self.timer.invalidate()
+        } //FIXME: invalidateメソッド呼出① prepareメソッド内では無条件にtimerプロパティのinvalidateメソッドを呼び出していますが、こちらもtimerプロパティがnil以外のときか、またはgoingプロパティがtrueのときのみinvalidateメソッドを呼び出すようにしたほうがよいかと思います。
         going = false
+        self.timer = nil
+        //FIXME: invalidateメソッド呼出② 一度タイマーを無効にした後は、timerプロパティもnilに設定したほうがよい
+        //TODO: 質問(追加)→ なぜ? nilに合わせないことのリスクは何か。
         
         let showDetailViewController: ShowDatailViewController = segue.destination as! ShowDatailViewController
         showDetailViewController.image = imageArray[showingNum]
